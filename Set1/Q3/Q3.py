@@ -1,23 +1,28 @@
 import numpy as np
 
 
-## D(i) = min(D(i/2)+1,D(i/3)+1,D(i-1)+1)
+## D(i,j) = if A(i)!=B(j) then min(D(i-1,j),D(i,j-1),D(i-1,j-1)) + 1 else min(...)
+
+
+
+def min_dist(str1,str2,D10,D01,D00,i,j):
+	mini = min(D10,min(D00,D01))
+	if str1[i]==str2[j]:
+		return mini
+	else:
+		return (mini + 1)
 
 
 if __name__ == '__main__':
-	n = 96234
-	D = np.zeros(n+1)
-	D[1] = 1
-	D[2] = 2
-	
-	for i in range(3,n+1):
-		if (i+1) % 2 == 0 and (i+1)%3==0:
-			D[i] = min(min(D[int(i/2)],D[int(i/3)]),D[i-1]) + 1
-		elif (i+1) % 2 == 0:
-			D[i] = min(D[int(i/2)],D[i-1]) + 1
-		elif (i+1) % 3 == 0:
-			D[i] = min(D[int(i/3)],D[i-1]) + 1
-		else :
-			D[i] = D[i-1] + 1
+	str1 = 'editing'
+	str2 = 'distance'
+	D = np.zeros((len(str1)+1,len(str2)+1))
+	for i in range(len(str1)+1):
+		D[i,0] = i
+	for i in range(len(str2)+1):
+		D[0,i] = i
 
-	print(int(D[n-1]))
+	for i in range(1,len(str1)+1):
+		for j in range(1,len(str2)+1):
+			D[i,j] = min_dist(str1,str2,D[i-1,j],D[i,j-1],D[i-1,j-1],i-1,j-1)
+	print(int(D[len(str1),len(str2)]))
