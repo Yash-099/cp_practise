@@ -8,7 +8,7 @@ import numpy as np
 def min_dist(str1,str2,D10,D01,D00,i,j):
 	mini = min(D10,min(D00,D01))
 	if str1[i]==str2[j]:
-		return mini
+		return D00
 	else:
 		return (mini + 1)
 
